@@ -34,9 +34,11 @@ Search → Analyze → Download
 
 2. **Analysis Agent** (`agents/analysis.py`)
    - Extracts transcripts using yt-dlp (`--write-auto-sub`)
-   - Sends transcript to Claude API to identify clip-worthy comedy moments
+   - Sends transcript to AI via Open Router to identify clip-worthy comedy moments
+   - Uses OpenAI SDK with Open Router endpoint (`https://openrouter.ai/api/v1`)
    - Returns JSON with start/end timestamps, descriptions, and suggested captions
-   - Model: `claude-sonnet-4-20250514`
+   - Default model: `anthropic/claude-3.5-sonnet` (configurable in code)
+   - Other available models: `openai/gpt-4-turbo`, `google/gemini-pro`, etc.
 
 3. **Download Agent** (`agents/download.py`)
    - Downloads video segments using yt-dlp `--download-sections`
@@ -54,6 +56,9 @@ Session state keys: `search_results`, `selected_video`, `clip_suggestions`, `dow
 
 ## Configuration
 
-- API key: Set `ANTHROPIC_API_KEY` in `.env` or via sidebar input
+- API key: Set `OPENROUTER_API_KEY` in `.env` or via sidebar input
+  - Get your API key at: https://openrouter.ai/
+  - Supports any model available on Open Router
 - Output directory: Configurable in sidebar (default: `./output`)
 - Clip settings: min/max length, number of suggestions per video
+- AI Model: Change in `agents/analysis.py` (line 134) - default is `anthropic/claude-3.5-sonnet`
