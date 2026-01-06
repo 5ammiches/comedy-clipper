@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ffmpeg:*)",
+      "Bash(python3:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(test:*)",
+      "Bash(cp:*)",
+      "Bash(streamlit run:*)",
+      "Bash(yt-dlp:*)",
+      "Bash(cat:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Comedy Clipper\n\nAI-powered tool for discovering YouTube comedy clips and preparing them for TikTok:\n- YouTube search with embedded video players\n- AI transcript analysis to find clip-worthy moments\n- Video download and TikTok format conversion \\(9:16\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
