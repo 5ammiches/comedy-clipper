@@ -5,7 +5,7 @@ import subprocess
 import json
 import os
 from typing import Optional
-from anthropic import Anthropic
+from openai import OpenAI
 
 
 def get_transcript(video_url: str) -> Optional[str]:
@@ -69,26 +69,30 @@ def analyze_for_clips(
     num_suggestions: int = 3
 ) -> list[dict]:
     """
-    Use Claude to analyze transcript and suggest clip segments.
-    
+    Use AI (via Open Router) to analyze transcript and suggest clip segments.
+
     Args:
         video_title: Title of the video
         video_duration: Total duration in seconds
         transcript: Video transcript with timestamps
         target_clip_length: (min_seconds, max_seconds) for clips
         num_suggestions: Number of clip suggestions to generate
-    
+
     Returns:
         List of suggested clips with start/end times and descriptions
     """
-    api_key = os.getenv("ANTHROPIC_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         return [{
-            "error": "ANTHROPIC_API_KEY not set",
+            "error": "OPENROUTER_API_KEY not set",
             "suggestion": "Set your API key in the .env file"
         }]
-    
-    client = Anthropic(api_key=api_key)
+
+    # Initialize OpenAI client with Open Router endpoint
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api_key
+    )
     
     prompt = f"""Analyze this comedy video transcript and identify the {num_suggestions} best moments that would make engaging short clips for TikTok/social media.
 
@@ -124,13 +128,15 @@ Focus on:
 Return ONLY the JSON array, no other text."""
 
     try:
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+        # Using Open Router - you can change the model to any available on Open Router
+        # Popular options: anthropic/claude-3.5-sonnet, openai/gpt-4-turbo, google/gemini-pro
+        response = client.chat.completions.create(
+            model="anthropic/claude-3.5-sonnet",  # Claude via Open Router
             max_tokens=1500,
             messages=[{"role": "user", "content": prompt}]
         )
-        
-        response_text = response.content[0].text.strip()
+
+        response_text = response.choices[0].message.content.strip()
         
         # Try to extract JSON from response
         if response_text.startswith('['):

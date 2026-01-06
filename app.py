@@ -78,13 +78,13 @@ with st.sidebar:
     
     # API Key configuration
     api_key = st.text_input(
-        "Anthropic API Key",
-        value=os.getenv("ANTHROPIC_API_KEY", ""),
+        "Open Router API Key",
+        value=os.getenv("OPENROUTER_API_KEY", ""),
         type="password",
-        help="Required for AI clip analysis"
+        help="Required for AI clip analysis. Get yours at https://openrouter.ai/"
     )
     if api_key:
-        os.environ["ANTHROPIC_API_KEY"] = api_key
+        os.environ["OPENROUTER_API_KEY"] = api_key
     
     st.divider()
     
@@ -217,8 +217,8 @@ if st.session_state.selected_video:
     col1, col2 = st.columns(2)
     with col1:
         if st.button("🤖 Analyze with AI", use_container_width=True):
-            if not os.getenv("ANTHROPIC_API_KEY"):
-                st.error("Please set your Anthropic API key in the sidebar")
+            if not os.getenv("OPENROUTER_API_KEY"):
+                st.error("Please set your Open Router API key in the sidebar")
             else:
                 with st.spinner("Getting transcript..."):
                     transcript = get_transcript(video['url'])
